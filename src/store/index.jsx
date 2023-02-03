@@ -4,9 +4,11 @@ import produce from "immer";
 
 const initialState = {
   isLogged: false,
-  userId: 0,
   token: "",
-  user: null,
+  email:"",
+  firstName: "",
+  lastName:"",
+  id:""
 };
 ////////////
 

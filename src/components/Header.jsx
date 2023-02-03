@@ -32,7 +32,7 @@ export default function Header() {
         <div className="logoutBlock">
           <NavLink className="main-nav-item" to="/login">
             <i className="fa-solid fa-arrow-right-from-bracket"></i>
-            <a href="">Sign out</a>
+          Sign out
           </NavLink>
         </div>
       </div>
