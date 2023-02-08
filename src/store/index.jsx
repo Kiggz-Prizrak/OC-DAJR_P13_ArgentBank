@@ -1,19 +1,22 @@
 import { createStore } from "redux";
-import produce from "immer";
+import { useDispatch } from "react-redux";
+// import produce from "immer";
+import Types from "../constants"
 
-const initialState = {
+console.log(JSON.parse(localStorage.getItem("data")));
+// STATE
+const initialState = JSON.parse(localStorage.getItem("data")) || {
   isLogged: false,
   token: "",
   email: "",
   firstName: "",
   lastName: "",
   id: "",
-};
+} ;
 
 // Action 
-
 export const login = (user) => ({
-   type: Types.LOGIN, payload: { 
+   type: /*Types.LOGIN*/ "LOGIN", payload: { 
     isLogged: true,
     token: user.token,
     email: user.email,
@@ -22,38 +25,31 @@ export const login = (user) => ({
     id: user.id, 
   } 
 });
-//export const updateProfile = (user) => ({ type: Types.UPDATE_USER, payload: { user } })
+export const logout = () => ({
+  types: "LOGOUT",
+  payload: { ...initialState },
+});
 
 
-// reducer
-
+// REDUCER
 export const reducer = (state = initialState, action) => {
+  
   switch (action.type) {
-    case Types.LOGIN:
-      console.log("login", action.payload.user);
-      // return {
-      //   ...state,
-      //   profile: action.payload.user,
-      //   formSubmitted: false, // after update user formsubmition reset
-      // };
-      return produce(state, (draft) => {
-
-      });
-    // case Types.UPDATE_USER:
-    //   return {
-    //     ...state,
-    //     profile: action.payload.user,
-    //     formSubmitted: false, // after update user formsubmition reset
-    //   };
+    case "LOGIN":
+      console.log("login", action.payload);
+      return {
+        ...state, ...action.payload,
+      };
+    case "LOGOUT":
+      console.log("logout", action.payload);
+      return {
+        ...initialState,
+      };
     default:
-      return state;
+      return state;  
   }
 }
 
-////////////
 
-
-
-/////////////
 
 export const store = createStore(reducer);
