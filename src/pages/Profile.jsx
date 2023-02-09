@@ -13,9 +13,8 @@ export default function Profile() {
   const getData = useSelector((state) => state);
 
   useEffect(() => {
-    console.log(getData);
     getData.isLogged ? setData(getData) : navigate("/login");
-  }, [getData.isLogged]);
+  }, [getData]);
 
   return (
     <main className="main bg-dark">

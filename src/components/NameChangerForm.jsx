@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { login } from "../store";
+import { setName } from "../store";
 
 import API from "../constants";
 
@@ -11,6 +11,8 @@ export function NameChangerForm(props) {
     lastName: props.lastName,
   });
   const [errorMessage, setErrorMessage] = useState("");
+
+  const dispatch = useDispatch();
 
   const getToken = useSelector((state) => state.token);
 
@@ -25,27 +27,31 @@ export function NameChangerForm(props) {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (
-      formValue.firstName.toLowerCase() === props.firstName.toLowerCase() ||
-      formValue.lastName.toLowerCase() === props.lastName.toLowerCase()
-    ) {
-      setErrorMessage("Nom d'utilisateur déjà utilisé");
-    } else if (!formValue.firstName || !formValue.lastName) {
+    if (!formValue.firstName || !formValue.lastName) {
       setErrorMessage("Veuillez renseigner tous les champs.");
     } else {
       setErrorMessage("");
-      console.log("in");
 
       fetch(`${API}/user/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getToken}`,
-          body: JSON.stringify(formValue),
         },
+        body: JSON.stringify(formValue),
       })
         .then((res) => res.json())
-        .then((res) => console.log(res));
+        .then((res) => {
+          console.log(res.body);
+          const data = {
+            firstName: res.body.firstName,
+            lastName: res.body.lastName,
+          };
+          console.log(data);
+          dispatch(setName(data));
+        });
+
+      props.setIsOpen(!props.isOpen);
     }
   };
 
