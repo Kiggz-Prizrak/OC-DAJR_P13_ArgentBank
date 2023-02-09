@@ -1,5 +1,4 @@
 import { createStore } from "redux";
-import { useDispatch } from "react-redux";
 import Types from "../constants";
 
 // STATE

@@ -9,6 +9,7 @@ import API from "../constants";
 export default function Login() {
   const [formValue, setFormValue] = useState({ email: "", password: "", });
   const [rememberMe, setRememberMe] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("")
 
   const isAlreadyLogged = JSON.parse(localStorage.getItem("token")) 
  
@@ -34,8 +35,13 @@ export default function Login() {
     })
       .then((res) => res.json())
       .then((res) => { 
+        setErrorMessage("");
         getProfile(res.body.token);
-      });   
+      })
+      .catch((err) => {
+        console.log(err)
+        setErrorMessage('Please provide valid data')
+      })   
   }
 
   const getProfile = (token) => {
@@ -99,6 +105,7 @@ export default function Login() {
              <button type="submit" className="sign-in-button">
                Sign In
              </button>
+             <p className="errorMessage">{errorMessage}</p>
            </form>
          </section>
        </main>
